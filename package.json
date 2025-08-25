@@ -4,18 +4,19 @@
   "description": "",
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ingest": "ts-node src/ingest.ts",
-    "search": "ts-node src/search.ts"
+    "ingest": "tsx src/ingest.ts",
+    "search": "tsx src/search.ts"
   },
   "dependencies": {
     "exiftool-vendored": "^30.3.0"
   },
   "devDependencies": {
-    "ts-node": "^10.9.2",
+    "@types/node": "^24.3.0",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
 }
