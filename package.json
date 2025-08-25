@@ -7,6 +7,15 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ingest": "ts-node src/ingest.ts",
+    "search": "ts-node src/search.ts"
+  },
+  "dependencies": {
+    "exiftool-vendored": "^30.3.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }
