@@ -39,10 +39,6 @@ for (const base64Image of base64Images) {
   });
 }
 
-interface CaptionResponse {
-  caption: string;
-}
-
 const response = await ai.models.generateContent({
   model: "gemini-2.5-flash",
   contents: createUserContent([
