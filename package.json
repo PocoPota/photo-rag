@@ -12,6 +12,8 @@
     "search": "tsx src/search.ts"
   },
   "dependencies": {
+    "@google/genai": "^1.15.0",
+    "dotenv": "^17.2.1",
     "exiftool-vendored": "^30.3.0"
   },
   "devDependencies": {
