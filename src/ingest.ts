@@ -22,6 +22,7 @@ if (!process.env.GEMINI_API_KEY) {
 }
 const ai = new GoogleGenAI({});
 
+// 画像をbase64エンコード
 const base64Images = [];
 for (const name of names) {
   const fullPath = path.join("data/photos", name);
@@ -39,6 +40,7 @@ for (const base64Image of base64Images) {
   });
 }
 
+// キャプション生成
 const captionResponse = await ai.models.generateContent({
   model: "gemini-2.5-flash",
   contents: createUserContent([
