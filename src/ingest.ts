@@ -39,7 +39,7 @@ for (const base64Image of base64Images) {
   });
 }
 
-const response = await ai.models.generateContent({
+const captionResponse = await ai.models.generateContent({
   model: "gemini-2.5-flash",
   contents: createUserContent([
     "以下の各画像に対して、簡潔なキャプションを日本語で生成してください。",
@@ -59,20 +59,50 @@ const response = await ai.models.generateContent({
   },
 });
 
-if(!response.text){
+if(!captionResponse.text){
   throw new Error("response.text is empty");
 }
-const parsedResponse = JSON.parse(response.text);
+const parsedResponse = JSON.parse(captionResponse.text);
+const captions = parsedResponse.map((item: { caption: string }) => item.caption);
+
+// キャプションのエンベディング生成
+const embeddingResponse = await ai.models.embedContent({
+  model: "gemini-embedding-001",
+  contents: captions,
+});
+
+if(!embeddingResponse.embeddings){
+  throw new Error("embeddingResponse.embeddings is empty");
+}
+
+// photosの型
+type Photo = {
+  id: number;
+  fileName: string;
+  caption: string;
+  date: string;
+  embedding: number[];
+};
 
 // 写真データを統合したjsonの生成
-const photos = [];
+const photos: Array<Photo> = [];
 for (let i = 0; i < names.length; i++) {
   photos.push({
     id: i + 1,
     fileName: "data/photos/" + names[i],
-    caption: parsedResponse[i].caption,
-    date: `${exifs[i]!.DateTimeOriginal}`
+    caption: captions[i],
+    date: `${exifs[i]!.DateTimeOriginal}`,
+    embedding: embeddingResponse.embeddings[i]!.values || [],
   });
 }
 
-console.log(photos);
+// photos.jsonとして保存
+await import("fs").then((fs) =>
+  fs.promises.writeFile(
+    "data/photos.json",
+    JSON.stringify(photos, null, 2),
+    "utf-8"
+  )
+);
+
+console.log(photos)
