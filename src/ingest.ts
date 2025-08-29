@@ -104,5 +104,3 @@ await import("fs").then((fs) =>
     "utf-8"
   )
 );
-
-console.log(photos)
